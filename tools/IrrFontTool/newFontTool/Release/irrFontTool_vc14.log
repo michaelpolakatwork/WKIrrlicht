@@ -1,0 +1,5 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  main.cpp
+  CFontTool.cpp
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'Irrlicht.lib'

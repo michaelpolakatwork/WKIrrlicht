@@ -1,7 +1,13 @@
-obj\*
-bin\*
+obj/
+bin/*
+/*/Debug/
+/*/*/Debug/
+/*/Release/
+/*/*/Release/
 *.user
 /.vs/
+/*/.vs/
+/*/*/.vs/
 /source/Debug-x86/
 /source/Debug-x64/
 /source/Release-x86/
