@@ -113,8 +113,8 @@ IAnimatedMesh* IO_MeshLoader_W3ENT::createMesh(io::IReadFile* f)
             Meshes[i]->drop();
         }
         */
-        AnimatedMesh->convertMeshToTangents();
-        AnimatedMesh->setMaterialFlag(video::EMF_LIGHTING, false);
+        //AnimatedMesh->convertMeshToTangents();
+        //AnimatedMesh->setMaterialFlag(video::EMF_LIGHTING, false);
 		AnimatedMesh->finalize();
         //Feedback += "done";
         // No feedback = 'done' feedback so it's necesseray to fill it
@@ -186,7 +186,7 @@ bool IO_MeshLoader_W3ENT::W3_load(io::IReadFile* file)
         W3_DataInfos infos;
         u16 dataType = readU16(file);
         core::stringc dataTypeName = Strings[dataType];
-        // log->addLineAndFlush(formatString("dataTypeName=%s", dataTypeName.c_str()));
+
         os::Printer::log((formatString("dataTypeName=%s", dataTypeName.c_str())).c_str(), ELL_DEBUG);
 
         file->seek(6, true);
@@ -784,8 +784,8 @@ video::SMaterial IO_MeshLoader_W3ENT::ReadIMaterialProperty(io::IReadFile* file)
                     os::Printer::log((formatString("load texture %s ", Files[texId].c_str())).c_str(), ELL_DEBUG);
                     mat.setTexture(textureLayer, texture);
 
-                    if (textureLayer == 1)  // normal map
-                        mat.MaterialType = video::EMT_NORMAL_MAP_SOLID;
+                    if (textureLayer == 1) {} // normal map
+                        //mat.MaterialType = video::EMT_NORMAL_MAP_SOLID; // normal map solid is not supported by d3d9 driver
                 }
                 else
                 {
@@ -941,6 +941,12 @@ float bits12ToFloat(s16 value)
     return fVal;
 }
 
+float bits16ToFloat(u16 value)
+{
+    float fVal = (32767.0f - value) * (1 / 32768.0f);
+    return fVal;
+}
+
 core::stringc getAnimTrackString(EAnimTrackType type)
 {
     if (type == EATT_POSITION)
@@ -1010,9 +1016,9 @@ void IO_MeshLoader_W3ENT::readAnimBuffer(core::array<core::array<SAnimationBuffe
                     */
 
                 }
+                core::quaternion orientation;
                 if (infos.type == EATT_ORIENTATION)
                 {
-                    core::quaternion orientation;
                     if (c == ABOCM_PackIn48bitsW)
                     {
                         uint64_t b1 = readU8(dataFile);
@@ -1050,18 +1056,43 @@ void IO_MeshLoader_W3ENT::readAnimBuffer(core::array<core::array<SAnimationBuffe
                         core::vector3df euler;
                         orientation.toEuler(euler);
                         euler *= core::RADTODEG;
-
                         
                         os::Printer::log((formatString("Quaternion : x=%f, y=%f, z=%f, w=%f", fx, fy, fz, fw)).c_str(), ELL_DEBUG);
                         os::Printer::log((formatString("Quaternion mult : x=%f, y=%f, z=%f, w=%f", fx * fx + fy * fy + fz * fz + fw * fw)).c_str(), ELL_DEBUG);
                         os::Printer::log((formatString("Euler : x=%f, y=%f, z=%f", euler.X, euler.Y, euler.Z)).c_str(), ELL_DEBUG);
                         
                     }
+                    else
+                    {
+                        //orientation is crypted in 8 bytes
+                        u16 plain[4];
+                        plain[0] = readS16(dataFile);
+                        plain[1] = readS16(dataFile);
+                        plain[2] = readS16(dataFile);
+                        plain[3] = readS16(dataFile);
+
+                        f32 fx, fy, fz, fw;
+
+                        fx = bits16ToFloat(plain[0]);
+                        fy = bits16ToFloat(plain[1]);
+                        fz = bits16ToFloat(plain[2]);
+                        fw = -bits16ToFloat(plain[3]);
+
+                        orientation = core::quaternion(fx, fy, fz, fw);
+                        core::vector3df euler;
+                        orientation.toEuler(euler);
+                        euler *= core::RADTODEG;
+
+                        os::Printer::log((formatString("Quaternion : x=%f, y=%f, z=%f, w=%f", fx, fy, fz, fw)).c_str(), ELL_DEBUG);
+                        os::Printer::log((formatString("Quaternion mult : x=%f, y=%f, z=%f, w=%f", fx * fx + fy * fy + fz * fz + fw * fw)).c_str(), ELL_DEBUG);
+                        os::Printer::log((formatString("Euler : x=%f, y=%f, z=%f", euler.X, euler.Y, euler.Z)).c_str(), ELL_DEBUG);
+                    }
 
                     scene::ISkinnedMesh::SRotationKey* key = meshToAnimate->addRotationKey(joint);
                     key->rotation = orientation;
                     key->frame = keyframe;
                 }
+
                 if (infos.type == EATT_SCALE)
                 {
                     //std::cout << "compressionSize= " << (int)compressionSize << std::endl;
