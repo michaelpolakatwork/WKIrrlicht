@@ -519,6 +519,11 @@ B3D, MS3D or X meshes */
 #ifdef NO_IRR_COMPILE_WITH_SMF_LOADER_
 #undef _IRR_COMPILE_WITH_SMF_LOADER_
 #endif
+//! Define _IRR_COMPILE_WITH_W3ENT_LOADER_ if you want to write .b3d files
+#define _IRR_COMPILE_WITH_W3ENT_LOADER_
+#ifdef NO_IRR_COMPILE_WITH_W3ENT_LOADER_
+#undef _IRR_COMPILE_WITH_W3ENT_LOADER_
+#endif // NO_IRR_COMPILE_WITH_W3ENT_LOADER_
 
 //! Define _IRR_COMPILE_WITH_IRR_WRITER_ if you want to write static .irrMesh files
 #define _IRR_COMPILE_WITH_IRR_WRITER_
@@ -550,11 +555,11 @@ B3D, MS3D or X meshes */
 #ifdef NO_IRR_COMPILE_WITH_B3D_WRITER_
 #undef _IRR_COMPILE_WITH_B3D_WRITER_
 #endif
-//! Define _IRR_COMPILE_WITH_W3ENT_LOADER_ if you want to write .b3d files
-#define _IRR_COMPILE_WITH_W3ENT_LOADER_
-#ifdef NO_IRR_COMPILE_WITH_W3ENT_LOADER_
-#undef _IRR_COMPILE_WITH_W3ENT_LOADER_
-#endif // NO_IRR_COMPILE_WITH_W3ENT_LOADER_
+//! Define _IRR_COMPILE_WITH_FBX_WRITER_ if you want to write .fbx files
+#define _IRR_COMPILE_WITH_FBX_WRITER_
+#ifdef _IRR_COMPILE_WITH_FBX_WRITER_
+#undef NO_IRR_COMPILE_WITH_FBX_WRITER_
+#endif // _IRR_COMPILE_WITH_FBX_WRITER_
 
 
 //! Define _IRR_COMPILE_WITH_BMP_LOADER_ if you want to load .bmp files

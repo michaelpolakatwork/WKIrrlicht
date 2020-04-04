@@ -1360,6 +1360,9 @@
     <ClInclude Include="Utils_RedEngine.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
+    <ClInclude Include="CFBXMeshWriter.h">
+      <Filter>Irrlicht\scene\writers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\changes.txt">
@@ -2315,6 +2318,9 @@
     </ClCompile>
     <ClCompile Include="Utils_RedEngine.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CFBXMeshWriter.cpp">
+      <Filter>Irrlicht\scene\writers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

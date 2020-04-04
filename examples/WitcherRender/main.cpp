@@ -15,6 +15,7 @@ using namespace irr;
 using namespace WKRender;
 
 
+
 int main()
 {
 	SIrrlichtCreationParameters irrparam = {};
@@ -33,9 +34,9 @@ int main()
 	if (!device)
 		return 1;
 
-	WKEventReceiver receiver;
+	WKEventReceiver receiver(device);
 	
-	device->setWindowCaption(L"Witcher Renderer! - Irrlicht Engine Demo");
+	device->setWindowCaption(L"Witcher Renderer! - Irrlicht Engine");
 	device->setEventReceiver(&receiver);
 
 	
@@ -102,6 +103,7 @@ int main()
 		device->drop();
 		return 1;
 	}
+	receiver.SetMesh(mesh);
 
 	smgr->getMeshManipulator()->recalculateNormals(mesh);
 	//mesh->setDirty(scene::EBT_VERTEX_AND_INDEX);

@@ -34,7 +34,10 @@ namespace scene
 		EMWT_PLY          = MAKE_IRR_ID('p','l','y',0),
 		
 		//! B3D mesh writer, for static .b3d files
-		EMWT_B3D          = MAKE_IRR_ID('b', '3', 'd', 0)
+		EMWT_B3D          = MAKE_IRR_ID('b', '3', 'd', 0),
+
+		//! FBX mesh writer for .fbx mesh files
+		EMWT_FBX = MAKE_IRR_ID('f', 'b', 'x', 0)
 	};
 
 

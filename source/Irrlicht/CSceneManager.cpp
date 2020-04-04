@@ -143,6 +143,10 @@
 #include "CB3DMeshWriter.h"
 #endif
 
+#ifdef _IRR_COMPILE_WITH_FBX_WRITER_
+#include "CFBXMeshWriter.h"
+#endif
+
 #ifdef _IRR_COMPILE_WITH_CUBE_SCENENODE_
 #include "CCubeSceneNode.h"
 #endif // _IRR_COMPILE_WITH_CUBE_SCENENODE_
@@ -2643,6 +2647,13 @@ IMeshWriter* CSceneManager::createMeshWriter(EMESH_WRITER_TYPE type)
 #else
 		return 0;
 #endif
+	case EMWT_FBX:
+#ifdef _IRR_COMPILE_WITH_FBX_WRITER_
+		return new CFBXMeshWriter(this, Driver, FileSystem);
+#else
+		return 0;
+#endif // _IRR_COMPILE_WITH_FBX_WRITER_
+
 	}
 
 	return 0;

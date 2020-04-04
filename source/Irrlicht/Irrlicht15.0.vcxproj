@@ -362,11 +362,11 @@
       <TypeLibraryName>.\..\Debug/Irrlicht.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\include\fbxsdk;..\..\include;zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\include;..\..\include;zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;_USRDLL;IRRLICHT_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>false</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
@@ -379,10 +379,10 @@
       <Culture>0x0c07</Culture>
     </ResourceCompile>
     <ProjectReference>
-      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libxml2-md.lib;libfbxsdk-md.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\..\bin\Win64-visualstudio\$(Configuration)\Irrlicht.dll</OutputFile>
       <AdditionalLibraryDirectories>D:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libci.lib;libmct;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -445,7 +445,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>D:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\include\fbxsdk;..\..\include;zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\include;..\..\include;zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;_USRDLL;IRRLICHT_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
@@ -459,13 +459,15 @@
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <DisableSpecificWarnings>4577</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <BasicRuntimeChecks>
+      </BasicRuntimeChecks>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0c07</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libxml2-md.lib;libfbxsdk-md.lib;kernel32.lib;user32.lib;gdi32.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\..\bin\Win64-visualstudio\$(Configuration)\Irrlicht.dll</OutputFile>
       <IgnoreSpecificDefaultLibraries>libci.lib;libmct;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -1023,6 +1025,7 @@
     <ClInclude Include="CD3D9RenderTarget.h" />
     <ClInclude Include="CDefaultSceneNodeAnimatorFactory.h" />
     <ClInclude Include="CDefaultSceneNodeFactory.h" />
+    <ClInclude Include="CFBXMeshWriter.h" />
     <ClInclude Include="CGeometryCreator.h" />
     <ClInclude Include="CGLXManager.h" />
     <ClInclude Include="CMeshCache.h" />
@@ -1284,6 +1287,7 @@
     <ClCompile Include="CD3D9RenderTarget.cpp" />
     <ClCompile Include="CDefaultSceneNodeAnimatorFactory.cpp" />
     <ClCompile Include="CDefaultSceneNodeFactory.cpp" />
+    <ClCompile Include="CFBXMeshWriter.cpp" />
     <ClCompile Include="CGeometryCreator.cpp" />
     <ClCompile Include="CGLXManager.cpp" />
     <ClCompile Include="CMeshCache.cpp" />
