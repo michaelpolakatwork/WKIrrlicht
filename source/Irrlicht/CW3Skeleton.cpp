@@ -6,7 +6,7 @@
 //#define _IRR_COMPILE_WITH_W3ENT_LOADER_
 #ifdef _IRR_COMPILE_WITH_W3ENT_LOADER_
 
-#include "TW3_CSkeleton.h"
+#include "CW3Skeleton.h"
 
 #include <iostream>
 
@@ -14,7 +14,7 @@ namespace irr
 {
     namespace scene
     {
-        TW3_CSkeleton::TW3_CSkeleton() : nbBones(0)
+        CW3Skeleton::CW3Skeleton() : nbBones(0)
         {
 
         }
@@ -110,7 +110,7 @@ namespace irr
         }
 
 
-        bool TW3_CSkeleton::applyToModel(scene::ISkinnedMesh* mesh)
+        bool CW3Skeleton::applyToModel(scene::ISkinnedMesh* mesh)
         {
             // Create the bones
             for (u32 i = 0; i < nbBones; ++i)

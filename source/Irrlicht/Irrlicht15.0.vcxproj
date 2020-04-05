@@ -1044,8 +1044,8 @@
     <ClInclude Include="COpenGLShaderMaterialRenderer.h" />
     <ClInclude Include="COpenGLSLMaterialRenderer.h" />
     <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CW3EntLoader.h" />
     <ClInclude Include="CWGLManager.h" />
-    <ClInclude Include="IO_MeshLoader_W3ENT.h" />
     <ClInclude Include="MeshCombiner.h" />
     <ClInclude Include="Octree.h" />
     <ClInclude Include="CSMFMeshFileLoader.h" />
@@ -1186,8 +1186,8 @@
     <ClInclude Include="EProfileIDs.h" />
     <ClInclude Include="lzma\LzmaDec.h" />
     <ClInclude Include="lzma\Types.h" />
-    <ClInclude Include="TW3_CSkeleton.h" />
-    <ClInclude Include="TW3_DataCache.h" />
+    <ClInclude Include="CW3Skeleton.h" />
+    <ClInclude Include="CW3DataCache.h" />
     <ClInclude Include="Utils_Halffloat.h" />
     <ClInclude Include="Utils_Loaders_Irr.h" />
     <ClInclude Include="Utils_RedEngine.h" />
@@ -1449,12 +1449,12 @@
     <ClCompile Include="IBurningShader.cpp" />
     <ClCompile Include="CLogger.cpp" />
     <ClCompile Include="COSOperator.cpp" />
-    <ClCompile Include="IO_MeshLoader_W3ENT.cpp" />
+    <ClCompile Include="CW3EntLoader.cpp" />
     <ClCompile Include="Irrlicht.cpp" />
     <ClCompile Include="MeshCombiner.cpp" />
     <ClCompile Include="os.cpp" />
-    <ClCompile Include="TW3_CSkeleton.cpp" />
-    <ClCompile Include="TW3_DataCache.cpp" />
+    <ClCompile Include="CW3Skeleton.cpp" />
+    <ClCompile Include="CW3DataCache.cpp" />
     <ClCompile Include="utf8.cpp" />
     <ClCompile Include="CProfiler.cpp" />
     <ClCompile Include="leakHunter.cpp" />

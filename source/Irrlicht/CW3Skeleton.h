@@ -14,10 +14,10 @@ namespace irr
 
         scene::ISkinnedMesh::SJoint* getJointByName(scene::ISkinnedMesh* mesh, core::stringc name);
 
-        class TW3_CSkeleton
+        class CW3Skeleton
         {
         public:
-            TW3_CSkeleton();
+            CW3Skeleton();
 
             u32 nbBones;
             core::array<core::stringc> names;

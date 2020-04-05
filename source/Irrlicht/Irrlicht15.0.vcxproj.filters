@@ -1339,16 +1339,7 @@
     <ClInclude Include="CWGLManager.h">
       <Filter>Irrlicht\video\OpenGL Context</Filter>
     </ClInclude>
-    <ClInclude Include="IO_MeshLoader_W3ENT.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="MeshCombiner.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="TW3_CSkeleton.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="TW3_DataCache.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
     <ClInclude Include="Utils_Halffloat.h">
@@ -1362,6 +1353,15 @@
     </ClInclude>
     <ClInclude Include="CFBXMeshWriter.h">
       <Filter>Irrlicht\scene\writers</Filter>
+    </ClInclude>
+    <ClInclude Include="CW3EntLoader.h">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CW3DataCache.h">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CW3Skeleton.h">
+      <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2301,16 +2301,7 @@
     <ClCompile Include="CWGLManager.cpp">
       <Filter>Irrlicht\video\OpenGL Context</Filter>
     </ClCompile>
-    <ClCompile Include="IO_MeshLoader_W3ENT.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
     <ClCompile Include="MeshCombiner.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="TW3_CSkeleton.cpp">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="TW3_DataCache.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
     <ClCompile Include="Utils_Loaders_Irr.cpp">
@@ -2321,6 +2312,15 @@
     </ClCompile>
     <ClCompile Include="CFBXMeshWriter.cpp">
       <Filter>Irrlicht\scene\writers</Filter>
+    </ClCompile>
+    <ClCompile Include="CW3EntLoader.cpp">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CW3DataCache.cpp">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CW3Skeleton.cpp">
+      <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

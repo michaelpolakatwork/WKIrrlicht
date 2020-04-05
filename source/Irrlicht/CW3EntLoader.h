@@ -13,8 +13,8 @@
 #include "IMeshManipulator.h"
 #include "ISkinnedMesh.h"
 
-#include "TW3_CSkeleton.h"
-#include "TW3_DataCache.h"
+#include "CW3Skeleton.h"
+#include "CW3DataCache.h"
 #include "Utils_RedEngine.h"
 #include "MeshCombiner.h"
 //#include "Log.h"
@@ -146,12 +146,12 @@ namespace irr
         class IMeshManipulator;
 
         //! Meshloader capable of loading w2ent meshes.
-        class IO_MeshLoader_W3ENT : public IMeshLoader
+        class CW3EntLoader : public IMeshLoader
         {
         public:
 
             //! Constructor
-            IO_MeshLoader_W3ENT(scene::ISceneManager* smgr, io::IFileSystem* fs);
+            CW3EntLoader(scene::ISceneManager* smgr, io::IFileSystem* fs);
 
             //! returns true if the file maybe is able to be loaded by this class
             //! based on the file extension (e.g. ".cob")
@@ -165,7 +165,7 @@ namespace irr
 
 
             core::array<video::SMaterial> Materials;
-            TW3_CSkeleton Skeleton;
+            CW3Skeleton Skeleton;
             scene::ISkinnedMesh* meshToAnimate;
 
         private:
@@ -184,7 +184,7 @@ namespace irr
             void W3_CMeshComponent(io::IReadFile* file, W3_DataInfos infos);
             void W3_CEntityTemplate(io::IReadFile* file, W3_DataInfos infos);   // Not handled yet
             void W3_CEntity(io::IReadFile* file, W3_DataInfos infos);           // Not handled yet
-            TW3_CSkeleton W3_CSkeleton(io::IReadFile* file, W3_DataInfos infos);
+            CW3Skeleton W3_CSkeleton(io::IReadFile* file, W3_DataInfos infos);
             void W3_CAnimationBufferBitwiseCompressed(io::IReadFile* file, W3_DataInfos infos);
             void W3_CUnknown(io::IReadFile* file, W3_DataInfos infos);
 

@@ -36,7 +36,7 @@ namespace irr
             f32 _strenght;
         };
 
-        class TW3_DataCache
+        class CW3DataCache
         {
             scene::ISkinnedMesh* _owner;
 
@@ -50,9 +50,9 @@ namespace irr
             void applySkinnedVertexArray();
 
         public:
-            TW3_DataCache();
+            CW3DataCache();
 
-            static TW3_DataCache _instance;
+            static CW3DataCache _instance;
 
             void setOwner(scene::ISkinnedMesh* owner);
             void addBoneEntry(core::stringc name, core::matrix4 boneOffset);

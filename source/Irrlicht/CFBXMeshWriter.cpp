@@ -66,6 +66,7 @@ namespace scene
 		_file->drop();
 		ColladaMeshWr->drop();
 
+		//now create fbx scene and read collada dae file
 
 		// create a SdkManager
 		FbxManager* lSdkManager = FbxManager::Create();
@@ -94,9 +95,8 @@ namespace scene
 		// Import the scene.
 		ret = lImporter->Import(lScene);
 		
-		
 		bool lStatus;
-		if (ret) // success importing, verufy scene integrity
+		if (ret) // success importing, verify scene integrity
 		{
 			FbxStatus status;
 			FbxArray< FbxString*> details;
@@ -153,7 +153,7 @@ namespace scene
 			}
 		}
 		
-		//damn conversion needed; fbx is not compiled with UNICODE
+		//damn conversion needed; fbx is not build with UNICODE support
 		char * fileName = new char[250];
 		const wchar_t*  fn = file->getFileName().c_str();
 		wcstombs(fileName, fn, wcslen(fn));
@@ -166,15 +166,18 @@ namespace scene
 		// Initialize the exporter by providing a filename.
 		if (lExporter->Initialize(fileName, pFileFormat, lSdkManager->GetIOSettings()) == false)
 		{
-			FBXSDK_printf("Call to FbxExporter::Initialize() failed.\n");
-			FBXSDK_printf("Error returned: %s\n\n", lExporter->GetStatus().GetErrorString());
+			os::Printer::log("Call to FbxExporter::Initialize() failed.", ELL_ERROR);
+			os::Printer::log("Error returned: ", lExporter->GetStatus().GetErrorString(), ELL_ERROR);
 			return false;
 		}
 
 		// Export the scene.
 		lStatus = lExporter->Export(lScene);
-		lExporter->Destroy();
+		if (!lStatus)
+			os::Printer::log("Call to FbxExporter::Export() failed.", ELL_ERROR);
 
+		//cleanup
+		lExporter->Destroy();
 		std::remove("temp.dae");
 
 		return lStatus;

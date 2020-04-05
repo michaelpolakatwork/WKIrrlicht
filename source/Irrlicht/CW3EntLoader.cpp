@@ -8,7 +8,7 @@
 //#define _IRR_COMPILE_WITH_W3ENT_LOADER_
 #ifdef _IRR_COMPILE_WITH_W3ENT_LOADER_
 
-#include "IO_MeshLoader_W3ENT.h"
+#include "CW3EntLoader.h"
 
 #include "ISceneManager.h"
 #include "IVideoDriver.h"
@@ -30,7 +30,7 @@ namespace scene
 {
 
 //! Constructor
-IO_MeshLoader_W3ENT::IO_MeshLoader_W3ENT(scene::ISceneManager* smgr, io::IFileSystem* fs)
+CW3EntLoader::CW3EntLoader(scene::ISceneManager* smgr, io::IFileSystem* fs)
 : meshToAnimate(nullptr),
   SceneManager(smgr),
   FileSystem(fs),
@@ -48,7 +48,7 @@ IO_MeshLoader_W3ENT::IO_MeshLoader_W3ENT(scene::ISceneManager* smgr, io::IFileSy
 
 //! returns true if the file maybe is able to be loaded by this class
 //! based on the file extension (e.g. ".bsp")
-bool IO_MeshLoader_W3ENT::isALoadableFileExtension(const io::path& filename) const
+bool CW3EntLoader::isALoadableFileExtension(const io::path& filename) const
 {
     io::IReadFile* file = SceneManager->getFileSystem()->createAndOpenFile(filename);
     if (!file)
@@ -65,7 +65,7 @@ bool IO_MeshLoader_W3ENT::isALoadableFileExtension(const io::path& filename) con
 //! \return Pointer to the created mesh. Returns 0 if loading failed.
 //! If you no longer need the mesh, you should call IAnimatedMesh::drop().
 //! See IReferenceCounted::drop() for more information.
-IAnimatedMesh* IO_MeshLoader_W3ENT::createMesh(io::IReadFile* f)
+IAnimatedMesh* CW3EntLoader::createMesh(io::IReadFile* f)
 {
     Feedback = "";
 	if (!f)
@@ -135,12 +135,12 @@ IAnimatedMesh* IO_MeshLoader_W3ENT::createMesh(io::IReadFile* f)
 	return AnimatedMesh;
 }
 
-void IO_MeshLoader_W3ENT::writeLogBoolProperty(core::stringc name, bool value)
+void CW3EntLoader::writeLogBoolProperty(core::stringc name, bool value)
 {
     os::Printer::log((formatString("-> %s is %s", name.c_str(), value?"enabled":"disabled")).c_str(), ELL_DEBUG);
 }
 
-void IO_MeshLoader_W3ENT::writeLogHeader(const io::IReadFile* f)
+void CW3EntLoader::writeLogHeader(const io::IReadFile* f)
 {
     
     //log->addLine("");
@@ -163,7 +163,7 @@ void checkMaterial(video::SMaterial mat)
         ;//std::cout << "Le material n'a pas de tex slot 1" << std::endl;
 }
 
-bool IO_MeshLoader_W3ENT::W3_load(io::IReadFile* file)
+bool CW3EntLoader::W3_load(io::IReadFile* file)
 {
     RedEngineFileHeader header;
     loadTW3FileHeader(file, header);
@@ -253,7 +253,7 @@ bool IO_MeshLoader_W3ENT::W3_load(io::IReadFile* file)
 
 
 
-bool IO_MeshLoader_W3ENT::W3_ReadBuffer(io::IReadFile* file, SBufferInfos bufferInfos, SMeshInfos meshInfos)
+bool CW3EntLoader::W3_ReadBuffer(io::IReadFile* file, SBufferInfos bufferInfos, SMeshInfos meshInfos)
 {
     SVertexBufferInfos vBufferInf;
     u32 nbVertices = 0;
@@ -355,7 +355,7 @@ bool IO_MeshLoader_W3ENT::W3_ReadBuffer(io::IReadFile* file, SBufferInfos buffer
                     weight->vertex_id = i;
                     //std::cout << "TEST:" << fweight << ", " << bufferId << ", " << i << std::endl;
 
-                    TW3_DataCache::_instance.addVertexEntry(boneId, bufferId, i, fWeightStrength);
+                    CW3DataCache::_instance.addVertexEntry(boneId, bufferId, i, fWeightStrength);
                 }
             }
 
@@ -427,7 +427,7 @@ bool IO_MeshLoader_W3ENT::W3_ReadBuffer(io::IReadFile* file, SBufferInfos buffer
     return true;
 }
 
-bool IO_MeshLoader_W3ENT::ReadPropertyHeader(io::IReadFile* file, SPropertyHeader& propHeader)
+bool CW3EntLoader::ReadPropertyHeader(io::IReadFile* file, SPropertyHeader& propHeader)
 {
     u16 propName = readU16(file);
     u16 propType = readU16(file);
@@ -447,29 +447,29 @@ bool IO_MeshLoader_W3ENT::ReadPropertyHeader(io::IReadFile* file, SPropertyHeade
     return true;
 }
 
-inline u32 IO_MeshLoader_W3ENT::ReadUInt32Property(io::IReadFile* file)
+inline u32 CW3EntLoader::ReadUInt32Property(io::IReadFile* file)
 {
     return readU32(file);
 }
 
-inline u8 IO_MeshLoader_W3ENT::ReadUInt8Property(io::IReadFile* file)
+inline u8 CW3EntLoader::ReadUInt8Property(io::IReadFile* file)
 {
     return readU8(file);
 }
 
-inline f32 IO_MeshLoader_W3ENT::ReadFloatProperty(io::IReadFile* file)
+inline f32 CW3EntLoader::ReadFloatProperty(io::IReadFile* file)
 {
     return readF32(file);
 }
 
-bool IO_MeshLoader_W3ENT::ReadBoolProperty(io::IReadFile* file)
+bool CW3EntLoader::ReadBoolProperty(io::IReadFile* file)
 {
     u8 valueChar = readU8(file);
     bool value = (valueChar == 0) ? false : true;
     return value;
 }
 
-SAnimationBufferBitwiseCompressedData IO_MeshLoader_W3ENT::ReadSAnimationBufferBitwiseCompressedDataProperty(io::IReadFile* file)
+SAnimationBufferBitwiseCompressedData CW3EntLoader::ReadSAnimationBufferBitwiseCompressedDataProperty(io::IReadFile* file)
 {
     file->seek(1, true);
     SAnimationBufferBitwiseCompressedData dataInf;
@@ -497,7 +497,7 @@ SAnimationBufferBitwiseCompressedData IO_MeshLoader_W3ENT::ReadSAnimationBufferB
     return dataInf;
 }
 
-core::array<core::array<SAnimationBufferBitwiseCompressedData> > IO_MeshLoader_W3ENT::ReadSAnimationBufferBitwiseCompressedBoneTrackProperty(io::IReadFile* file)
+core::array<core::array<SAnimationBufferBitwiseCompressedData> > CW3EntLoader::ReadSAnimationBufferBitwiseCompressedBoneTrackProperty(io::IReadFile* file)
 {
     s32 arraySize = readS32(file);
     file->seek(1, true);
@@ -546,7 +546,7 @@ core::array<core::array<SAnimationBufferBitwiseCompressedData> > IO_MeshLoader_W
     return inf;
 }
 
-core::vector3df IO_MeshLoader_W3ENT::ReadVector3Property(io::IReadFile* file)
+core::vector3df CW3EntLoader::ReadVector3Property(io::IReadFile* file)
 {
     float x, y, z, w;
     file->seek(1, true);
@@ -563,7 +563,7 @@ core::vector3df IO_MeshLoader_W3ENT::ReadVector3Property(io::IReadFile* file)
     return core::vector3df(x, y, z);
 }
 
-void IO_MeshLoader_W3ENT::ReadMaterialsProperty(io::IReadFile* file)
+void CW3EntLoader::ReadMaterialsProperty(io::IReadFile* file)
 {
     s32 nbChunks = readS32(file);
 
@@ -598,7 +598,7 @@ void IO_MeshLoader_W3ENT::ReadMaterialsProperty(io::IReadFile* file)
     }
 }
 
-EMeshVertexType IO_MeshLoader_W3ENT::ReadEMVTProperty(io::IReadFile* file)
+EMeshVertexType CW3EntLoader::ReadEMVTProperty(io::IReadFile* file)
 {
     u16 enumStringId = readU16(file);
 
@@ -613,7 +613,7 @@ EMeshVertexType IO_MeshLoader_W3ENT::ReadEMVTProperty(io::IReadFile* file)
     return vertexType;
 }
 
-SAnimationBufferOrientationCompressionMethod IO_MeshLoader_W3ENT::ReadAnimationBufferOrientationCompressionMethodProperty(io::IReadFile* file)
+SAnimationBufferOrientationCompressionMethod CW3EntLoader::ReadAnimationBufferOrientationCompressionMethodProperty(io::IReadFile* file)
 {
     u16 enumStringId = readU16(file);
     core::stringc enumString = Strings[enumStringId];
@@ -626,7 +626,7 @@ SAnimationBufferOrientationCompressionMethod IO_MeshLoader_W3ENT::ReadAnimationB
     return (SAnimationBufferOrientationCompressionMethod)0;
 }
 
-core::array<SMeshInfos> IO_MeshLoader_W3ENT::ReadSMeshChunkPackedProperty(io::IReadFile* file)
+core::array<SMeshInfos> CW3EntLoader::ReadSMeshChunkPackedProperty(io::IReadFile* file)
 {
     core::array<SMeshInfos> meshes;
     SMeshInfos meshInfos;
@@ -706,7 +706,7 @@ core::array<SMeshInfos> IO_MeshLoader_W3ENT::ReadSMeshChunkPackedProperty(io::IR
     return meshes;
 }
 
-void IO_MeshLoader_W3ENT::ReadRenderChunksProperty(io::IReadFile* file, SBufferInfos* buffer)
+void CW3EntLoader::ReadRenderChunksProperty(io::IReadFile* file, SBufferInfos* buffer)
 {
     s32 nbElements = readS32(file); // array size (= bytes count here)
     //std::cout << "nbElem = " << nbElements << ", @= " << file->getPos() << ", end @=" << back + propSize << std::endl;
@@ -741,7 +741,7 @@ void IO_MeshLoader_W3ENT::ReadRenderChunksProperty(io::IReadFile* file, SBufferI
     }
 }
 
-video::SMaterial IO_MeshLoader_W3ENT::ReadIMaterialProperty(io::IReadFile* file)
+video::SMaterial CW3EntLoader::ReadIMaterialProperty(io::IReadFile* file)
 {
     os::Printer::log("IMaterial", ELL_DEBUG);
     video::SMaterial mat;
@@ -803,7 +803,7 @@ video::SMaterial IO_MeshLoader_W3ENT::ReadIMaterialProperty(io::IReadFile* file)
     return mat;
 }
 
-core::array<core::vector3df> IO_MeshLoader_W3ENT::ReadBonesPosition(io::IReadFile* file)
+core::array<core::vector3df> CW3EntLoader::ReadBonesPosition(io::IReadFile* file)
 {
     s32 nbBones = readS32(file);
 
@@ -830,7 +830,7 @@ core::array<core::vector3df> IO_MeshLoader_W3ENT::ReadBonesPosition(io::IReadFil
     return positions;
 }
 
-void IO_MeshLoader_W3ENT::ReadRenderLODSProperty(io::IReadFile* file)
+void CW3EntLoader::ReadRenderLODSProperty(io::IReadFile* file)
 {
     // LOD distances ?
     u32 arraySize = readU32(file);
@@ -841,7 +841,7 @@ void IO_MeshLoader_W3ENT::ReadRenderLODSProperty(io::IReadFile* file)
     }
 }
 
-SBufferInfos IO_MeshLoader_W3ENT::ReadSMeshCookedDataProperty(io::IReadFile* file)
+SBufferInfos CW3EntLoader::ReadSMeshCookedDataProperty(io::IReadFile* file)
 {
     SBufferInfos bufferInfos;
 
@@ -957,7 +957,7 @@ core::stringc getAnimTrackString(EAnimTrackType type)
         return "EATT_SCALE";
 }
 
-void IO_MeshLoader_W3ENT::readAnimBuffer(core::array<core::array<SAnimationBufferBitwiseCompressedData> >& inf, io::IReadFile* dataFile, SAnimationBufferOrientationCompressionMethod c)
+void CW3EntLoader::readAnimBuffer(core::array<core::array<SAnimationBufferBitwiseCompressedData> >& inf, io::IReadFile* dataFile, SAnimationBufferOrientationCompressionMethod c)
 {
     // Create bones to store the keys if they doesn't exist
     /*
@@ -1112,7 +1112,7 @@ void IO_MeshLoader_W3ENT::readAnimBuffer(core::array<core::array<SAnimationBuffe
     }
 }
 
-void IO_MeshLoader_W3ENT::W3_CUnknown(io::IReadFile* file, W3_DataInfos infos)
+void CW3EntLoader::W3_CUnknown(io::IReadFile* file, W3_DataInfos infos)
 {
     file->seek(infos.adress + 1);
     //std::cout << "W3_CUnknown, @infos.adress=" << infos.adress << ", end @" << infos.adress + infos.size << std::endl;
@@ -1128,7 +1128,7 @@ void IO_MeshLoader_W3ENT::W3_CUnknown(io::IReadFile* file, W3_DataInfos infos)
 }
 
 
-void IO_MeshLoader_W3ENT::W3_CAnimationBufferBitwiseCompressed(io::IReadFile* file, W3_DataInfos infos)
+void CW3EntLoader::W3_CAnimationBufferBitwiseCompressed(io::IReadFile* file, W3_DataInfos infos)
 {
     file->seek(infos.adress + 1);
     //std::cout << "W3_CUnknown, @infos.adress=" << infos.adress << ", end @" << infos.adress + infos.size << std::endl;
@@ -1216,13 +1216,13 @@ void chechNaNErrors(core::vector3df& vector3)
 
 }
 
-TW3_CSkeleton IO_MeshLoader_W3ENT::W3_CSkeleton(io::IReadFile* file, W3_DataInfos infos)
+CW3Skeleton CW3EntLoader::W3_CSkeleton(io::IReadFile* file, W3_DataInfos infos)
 {
     file->seek(infos.adress + 1);
     //std::cout << "W3_CSkeleton, @infos.adress=" << infos.adress << ", end @" << infos.adress + infos.size << std::endl;
     os::Printer::log("W3_CSkeleton", ELL_INFORMATION);
 
-    TW3_CSkeleton skeleton;
+    CW3Skeleton skeleton;
     SPropertyHeader propHeader;
 
     while (ReadPropertyHeader(file, propHeader))
@@ -1331,7 +1331,7 @@ TW3_CSkeleton IO_MeshLoader_W3ENT::W3_CSkeleton(io::IReadFile* file, W3_DataInfo
     return skeleton;
 }
 
-void IO_MeshLoader_W3ENT::W3_CMeshComponent(io::IReadFile* file, W3_DataInfos infos)
+void CW3EntLoader::W3_CMeshComponent(io::IReadFile* file, W3_DataInfos infos)
 {
     file->seek(infos.adress + 1);
     //std::cout << "W3_CMeshComponent, @infos.adress=" << infos.adress << ", end @" << infos.adress + infos.size << std::endl;
@@ -1346,9 +1346,9 @@ void IO_MeshLoader_W3ENT::W3_CMeshComponent(io::IReadFile* file, W3_DataInfos in
         {
             u32 meshComponentValue = readU32(file);
             u32 fileId = 0xFFFFFFFF - meshComponentValue;
-            TW3_DataCache::_instance._bufferID += AnimatedMesh->getMeshBufferCount();
+            CW3DataCache::_instance._bufferID += AnimatedMesh->getMeshBufferCount();
             scene::ISkinnedMesh* mesh = ReadW2MESHFile(ConfigGamePath + Files[fileId]);
-            TW3_DataCache::_instance._bufferID -= AnimatedMesh->getMeshBufferCount();
+            CW3DataCache::_instance._bufferID -= AnimatedMesh->getMeshBufferCount();
             if (mesh)
             {
                 // Merge in the main mesh
@@ -1367,7 +1367,7 @@ void IO_MeshLoader_W3ENT::W3_CMeshComponent(io::IReadFile* file, W3_DataInfos in
     os::Printer::log("W3_CMeshComponent end", ELL_INFORMATION);
 }
 
-void IO_MeshLoader_W3ENT::W3_CEntityTemplate(io::IReadFile* file, W3_DataInfos infos)
+void CW3EntLoader::W3_CEntityTemplate(io::IReadFile* file, W3_DataInfos infos)
 {
     file->seek(infos.adress + 1);
     os::Printer::log("W3_CEntityTemplate", ELL_INFORMATION);
@@ -1396,7 +1396,7 @@ void IO_MeshLoader_W3ENT::W3_CEntityTemplate(io::IReadFile* file, W3_DataInfos i
             if (!entityFile)
                 os::Printer::log("fail", ELL_ERROR);
 
-            IO_MeshLoader_W3ENT w3Loader(SceneManager, FileSystem);
+            CW3EntLoader w3Loader(SceneManager, FileSystem);
             IAnimatedMesh* m = w3Loader.createMesh(entityFile);
             if (m)
                 m->drop();
@@ -1410,13 +1410,13 @@ void IO_MeshLoader_W3ENT::W3_CEntityTemplate(io::IReadFile* file, W3_DataInfos i
     os::Printer::log("W3_CEntityTemplate end", ELL_INFORMATION);
 }
 
-void IO_MeshLoader_W3ENT::W3_CEntity(io::IReadFile* file, W3_DataInfos infos)
+void CW3EntLoader::W3_CEntity(io::IReadFile* file, W3_DataInfos infos)
 {
     file->seek(infos.adress + 1);
     //std::cout << "W3_CEntity, @infos.adress=" << infos.adress << ", end @" << infos.adress + infos.size << std::endl;
 }
 
-bool IO_MeshLoader_W3ENT::checkBones(io::IReadFile* file, char nbBones)
+bool CW3EntLoader::checkBones(io::IReadFile* file, char nbBones)
 {
     const long back = file->getPos();
     for (char i = 0; i < nbBones; ++i)
@@ -1444,7 +1444,7 @@ char readBonesNumber(io::IReadFile* file)
     return nbBones;
 }
 
-void IO_MeshLoader_W3ENT::W3_CMesh(io::IReadFile* file, W3_DataInfos infos)
+void CW3EntLoader::W3_CMesh(io::IReadFile* file, W3_DataInfos infos)
 {
     os::Printer::log("W3_CMesh", ELL_INFORMATION);
 
@@ -1514,7 +1514,7 @@ void IO_MeshLoader_W3ENT::W3_CMesh(io::IReadFile* file, W3_DataInfos infos)
    os::Printer::log("W3_CMesh end", ELL_INFORMATION);
 }
 
-void IO_MeshLoader_W3ENT::ReadBones(io::IReadFile* file)
+void CW3EntLoader::ReadBones(io::IReadFile* file)
 {
     os::Printer::log("Load bones", ELL_DEBUG);
 
@@ -1613,7 +1613,7 @@ void IO_MeshLoader_W3ENT::ReadBones(io::IReadFile* file)
             joint->Animatedrotation = core::quaternion(joint->LocalMatrix.getRotationDegrees()).makeInverse();
             joint->Animatedscale = joint->LocalMatrix.getScale();
 
-            TW3_DataCache::_instance.addBoneEntry(joint->Name, matrix);
+            CW3DataCache::_instance.addBoneEntry(joint->Name, matrix);
         }
     }
 
@@ -1636,7 +1636,7 @@ void IO_MeshLoader_W3ENT::ReadBones(io::IReadFile* file)
 }
 
 
-scene::ISkinnedMesh* IO_MeshLoader_W3ENT::ReadW2MESHFile(core::stringc filename)
+scene::ISkinnedMesh* CW3EntLoader::ReadW2MESHFile(core::stringc filename)
 {
     ISkinnedMesh* mesh = nullptr;
     io::IReadFile* meshFile = FileSystem->createAndOpenFile(filename);
@@ -1646,7 +1646,7 @@ scene::ISkinnedMesh* IO_MeshLoader_W3ENT::ReadW2MESHFile(core::stringc filename)
     }
     else
     {
-        IO_MeshLoader_W3ENT w3Loader(SceneManager, FileSystem);
+        CW3EntLoader w3Loader(SceneManager, FileSystem);
         mesh = reinterpret_cast<ISkinnedMesh*>(w3Loader.createMesh(meshFile));
         if (!mesh)
             os::Printer::log((formatString("Fail to load the w2mesh file : %s", filename.c_str())).c_str(), ELL_ERROR);
@@ -1658,7 +1658,7 @@ scene::ISkinnedMesh* IO_MeshLoader_W3ENT::ReadW2MESHFile(core::stringc filename)
 
 // In the materials, file can be w2mi (material) or w2mg (shader)
 // We check that and load the material in the case of a w2mi file
-video::SMaterial IO_MeshLoader_W3ENT::ReadMaterialFile(core::stringc filename)
+video::SMaterial CW3EntLoader::ReadMaterialFile(core::stringc filename)
 {
     if (core::hasFileExtension(filename, "w2mi"))
         return ReadW2MIFile(filename);
@@ -1671,7 +1671,7 @@ video::SMaterial IO_MeshLoader_W3ENT::ReadMaterialFile(core::stringc filename)
     return material;
 }
 
-video::SMaterial IO_MeshLoader_W3ENT::ReadW2MIFile(core::stringc filename)
+video::SMaterial CW3EntLoader::ReadW2MIFile(core::stringc filename)
 {
     os::Printer::log((formatString("Read W2MI : %s", filename.c_str())).c_str(), ELL_INFORMATION);
 
@@ -1684,7 +1684,7 @@ video::SMaterial IO_MeshLoader_W3ENT::ReadW2MIFile(core::stringc filename)
     }
     else
     {
-        IO_MeshLoader_W3ENT w2miLoader(SceneManager, FileSystem);
+        CW3EntLoader w2miLoader(SceneManager, FileSystem);
         IAnimatedMesh* matMesh = nullptr;
         matMesh = w2miLoader.createMesh(matFile);
         if (matMesh)
@@ -1706,7 +1706,7 @@ video::SMaterial IO_MeshLoader_W3ENT::ReadW2MIFile(core::stringc filename)
     return material;
 }
 
-video::SMaterial IO_MeshLoader_W3ENT::W3_CMaterialInstance(io::IReadFile* file, W3_DataInfos infos)
+video::SMaterial CW3EntLoader::W3_CMaterialInstance(io::IReadFile* file, W3_DataInfos infos)
 {
     file->seek(infos.adress + 1);
 
@@ -1745,7 +1745,7 @@ video::SMaterial IO_MeshLoader_W3ENT::W3_CMaterialInstance(io::IReadFile* file, 
 }
 
 // Check the file format version and load the mesh if it's ok
-bool IO_MeshLoader_W3ENT::load(io::IReadFile* file)
+bool CW3EntLoader::load(io::IReadFile* file)
 {
     readString(file, 4); // CR2W
 
@@ -1765,7 +1765,7 @@ bool IO_MeshLoader_W3ENT::load(io::IReadFile* file)
 }
 
 
-video::ITexture* IO_MeshLoader_W3ENT::getTexture(io::path filename)
+video::ITexture* CW3EntLoader::getTexture(io::path filename)
 {
     io::path baseFilename;
     if (core::hasFileExtension(filename.c_str(), "xbm"))
@@ -1813,7 +1813,7 @@ video::ITexture* IO_MeshLoader_W3ENT::getTexture(io::path filename)
     return texture;
 }
 
-s32 IO_MeshLoader_W3ENT::getTextureLayerFromTextureType(core::stringc textureType)
+s32 CW3EntLoader::getTextureLayerFromTextureType(core::stringc textureType)
 {
     if (textureType == "Diffuse")
         return 0;

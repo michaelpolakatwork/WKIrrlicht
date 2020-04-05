@@ -5,7 +5,7 @@
 
 #ifdef _IRR_COMPILE_WITH_W3ENT_LOADER_
 
-#include "TW3_DataCache.h"
+#include "CW3DataCache.h"
 #include "os.h"
 #include <iostream>
 
@@ -15,36 +15,36 @@ namespace irr
     namespace scene
     {
 
-        TW3_DataCache TW3_DataCache::_instance = TW3_DataCache();
+        CW3DataCache CW3DataCache::_instance = CW3DataCache();
 
-        TW3_DataCache::TW3_DataCache() : _owner(nullptr), _bufferID(0)
+        CW3DataCache::CW3DataCache() : _owner(nullptr), _bufferID(0)
         {
 
         }
 
-        void TW3_DataCache::setOwner(scene::ISkinnedMesh* owner)
+        void CW3DataCache::setOwner(scene::ISkinnedMesh* owner)
         {
             _owner = owner;
         }
 
-        void TW3_DataCache::clear()
+        void CW3DataCache::clear()
         {
             _owner = nullptr;
             _bones.clear();
             _vertices.clear();
         }
 
-        void TW3_DataCache::addBoneEntry(core::stringc name, core::matrix4 boneOffset)
+        void CW3DataCache::addBoneEntry(core::stringc name, core::matrix4 boneOffset)
         {
             _bones.push_back(BoneEntry(name, boneOffset));
         }
 
-        void TW3_DataCache::addVertexEntry(u32 boneID, u16 meshBufferID, u32 vertexID, f32 strenght)
+        void CW3DataCache::addVertexEntry(u32 boneID, u16 meshBufferID, u32 vertexID, f32 strenght)
         {
             _vertices.push_back(VertexSkinningEntry(boneID, _bufferID + meshBufferID, vertexID, strenght));
         }
 
-        void TW3_DataCache::apply()
+        void CW3DataCache::apply()
         {
             if (!_owner)
                 return;
@@ -81,7 +81,7 @@ namespace irr
             skin();
         }
 
-        void TW3_DataCache::skin()
+        void CW3DataCache::skin()
         {
             buildSkinnedVertexArray();
             for (u32 i = 0; i < _bones.size(); ++i)
@@ -101,7 +101,7 @@ namespace irr
         }
 
         // Adapted from http://sourceforge.net/p/assimp/discussion/817654/thread/5462cbf5
-        void TW3_DataCache::skinJoint(scene::ISkinnedMesh::SJoint* joint, BoneEntry bone)
+        void CW3DataCache::skinJoint(scene::ISkinnedMesh::SJoint* joint, BoneEntry bone)
         {
             const core::matrix4 boneOffset = bone._offsetMatrix;
             const core::matrix4 boneMat = joint->GlobalMatrix * boneOffset; //* InverseRootNodeWorldTransform;
@@ -124,7 +124,7 @@ namespace irr
             }
         }
 
-        void TW3_DataCache::buildSkinnedVertexArray()
+        void CW3DataCache::buildSkinnedVertexArray()
         {
             _skinnedVertex.clear();
 
@@ -136,7 +136,7 @@ namespace irr
             }
         }
 
-        void TW3_DataCache::applySkinnedVertexArray()
+        void CW3DataCache::applySkinnedVertexArray()
         {
             for (u32 j = 0; j < _owner->getMeshBufferCount(); ++j)
             {

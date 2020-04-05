@@ -95,7 +95,7 @@
 #endif
 
 #ifdef _IRR_COMPILE_WITH_W3ENT_LOADER_
-#include "IO_MeshLoader_W3ENT.h"
+#include "CW3EntLoader.h"
 #endif // _IRR_COMPILE_WITH_W3ENT_LOADER_
 
 
@@ -332,7 +332,7 @@ CSceneManager::CSceneManager(video::IVideoDriver* driver, io::IFileSystem* fs,
 	MeshLoaderList.push_back(new CB3DMeshFileLoader(this));
 	#endif
 	#ifdef _IRR_COMPILE_WITH_W3ENT_LOADER_
-	MeshLoaderList.push_back(new IO_MeshLoader_W3ENT(this, FileSystem));
+	MeshLoaderList.push_back(new CW3EntLoader(this, FileSystem));
 	#endif // _IRR_COMPILE_WITH_W3ENT_LOADER_
 
 
