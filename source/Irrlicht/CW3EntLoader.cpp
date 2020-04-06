@@ -5,11 +5,10 @@
 
 #include "IrrCompileConfig.h"
 
-//#define _IRR_COMPILE_WITH_W3ENT_LOADER_
 #ifdef _IRR_COMPILE_WITH_W3ENT_LOADER_
 
 #include "CW3EntLoader.h"
-
+#include "CMeshTextureLoader.h"
 #include "ISceneManager.h"
 #include "IVideoDriver.h"
 #include "IFileSystem.h"
@@ -36,13 +35,29 @@ CW3EntLoader::CW3EntLoader(scene::ISceneManager* smgr, io::IFileSystem* fs)
   FileSystem(fs),
   AnimatedMesh(nullptr),
   FrameOffset(0),
-  //log(nullptr), //vl: use irr Logger intead
   ConfigLoadSkeleton(true),
   ConfigLoadOnlyBestLOD(false)
 {
 	#ifdef _DEBUG
-    setDebugName("CW3ENTMeshFileLoader");
+    setDebugName("CW3ENTLoader");
 	#endif
+    if (FileSystem)
+        FileSystem->grab();
+
+    if (SceneManager)
+        SceneManager->grab();
+
+    TextureLoader = new CMeshTextureLoader(FileSystem, SceneManager->getVideoDriver());
+}
+
+CW3EntLoader::~CW3EntLoader()
+{
+    FileSystem->drop();
+    SceneManager->drop();
+
+    Materials.clear();
+    Meshes.clear();
+
 }
 
 

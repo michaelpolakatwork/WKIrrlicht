@@ -3,8 +3,8 @@
 // Copyright (C) 2002-2020 by Jean-Louis Boudrand
 // adapted to irrlicht by vonleebpl(at)gmail.com
 
-#ifndef __C_W3ENT_MESH_FILE_LOADER_H_INCLUDED__
-#define __C_W3ENT_MESH_FILE_LOADER_H_INCLUDED__
+#ifndef __C_W3ENT_LOADER_H_INCLUDED__
+#define __C_W3ENT_LOADER_H_INCLUDED__
 
 #include "IMeshLoader.h"
 #include "irrString.h"
@@ -152,6 +152,9 @@ namespace irr
 
             //! Constructor
             CW3EntLoader(scene::ISceneManager* smgr, io::IFileSystem* fs);
+
+            //! Destructor
+            virtual ~CW3EntLoader();
 
             //! returns true if the file maybe is able to be loaded by this class
             //! based on the file extension (e.g. ".cob")
