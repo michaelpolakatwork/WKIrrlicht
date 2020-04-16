@@ -1339,9 +1339,6 @@
     <ClInclude Include="CWGLManager.h">
       <Filter>Irrlicht\video\OpenGL Context</Filter>
     </ClInclude>
-    <ClInclude Include="MeshCombiner.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="Utils_Halffloat.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
@@ -1354,13 +1351,25 @@
     <ClInclude Include="CFBXMeshWriter.h">
       <Filter>Irrlicht\scene\writers</Filter>
     </ClInclude>
-    <ClInclude Include="CW3EntLoader.h">
-      <Filter>Irrlicht\scene\loaders</Filter>
-    </ClInclude>
     <ClInclude Include="CW3DataCache.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
+    <ClInclude Include="CW3EntLoader.h">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClInclude>
     <ClInclude Include="CW3Skeleton.h">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshCombiner.h">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\IMeshLoaderHelper.h">
+      <Filter>include\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CW3Animation.h">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CW3MeshLoaderHelper.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2320,6 +2329,12 @@
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
     <ClCompile Include="CW3Skeleton.cpp">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CW3Animation.cpp">
+      <Filter>Irrlicht\scene\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CW3MeshLoaderHelper.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClCompile>
   </ItemGroup>

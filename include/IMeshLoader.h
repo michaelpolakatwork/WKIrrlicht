@@ -8,6 +8,7 @@
 #include "IReferenceCounted.h"
 #include "path.h"
 #include "IMeshTextureLoader.h"
+#include "IMeshLoaderHelper.h"
 
 namespace irr
 {
@@ -18,7 +19,7 @@ namespace io
 namespace scene
 {
 	class IAnimatedMesh;
-
+	
 //! Class which is able to load an animated mesh from a file.
 /** If you want Irrlicht be able to load meshes of
 currently unsupported file formats (e.g. .cob), then implement
@@ -29,13 +30,15 @@ class IMeshLoader : public virtual IReferenceCounted
 public:
 
 	//! Constructor
-	IMeshLoader() : TextureLoader(0) {}
+	IMeshLoader() : TextureLoader(0), LoaderHelper(0) {}
 
 	//! Destructor
 	virtual ~IMeshLoader()
 	{
 		if ( TextureLoader )
 			TextureLoader->drop();
+		if (LoaderHelper)
+			LoaderHelper->drop();
 	}
 
 	//! Returns true if the file might be loaded by this class.
@@ -78,8 +81,14 @@ public:
 		return TextureLoader;
 	}
 
+	virtual IMeshLoaderHelper* getMeshLoaderHelper() const
+	{
+		return LoaderHelper;
+	}
+
 protected:
 	IMeshTextureLoader* TextureLoader;
+	IMeshLoaderHelper* LoaderHelper;
 };
 
 

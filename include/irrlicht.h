@@ -112,6 +112,7 @@
 #include "IMeshBuffer.h"
 #include "IMeshCache.h"
 #include "IMeshLoader.h"
+#include "IMeshLoaderHelper.h"
 #include "IMeshManipulator.h"
 #include "IMeshSceneNode.h"
 #include "IMeshWriter.h"
@@ -191,6 +192,7 @@
 #include "triangle3d.h"
 #include "vector2d.h"
 #include "vector3d.h"
+
 
 /*! \mainpage Irrlicht Engine 1.9 API documentation
  *

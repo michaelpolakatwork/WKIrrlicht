@@ -90,7 +90,7 @@ namespace scene
 		FbxImporter* lImporter = FbxImporter::Create(lSdkManager, "");
 
 		// Initialize the importer by providing a filename and the IOSettings to use
-		lImporter->Initialize("temp.dae"); // , -1, ios);
+		lImporter->Initialize("temp.dae" , -1, ios);
 
 		// Import the scene.
 		ret = lImporter->Import(lScene);
@@ -144,7 +144,7 @@ namespace scene
 			if (lSdkManager->GetIOPluginRegistry()->WriterIsFBX(lFormatIndex))
 			{
 				FbxString lDesc = lSdkManager->GetIOPluginRegistry()->GetWriterFormatDescription(lFormatIndex);
-				const char* lASCII = "ascii";
+				const char* lASCII = "binary";
 				if (lDesc.Find(lASCII) >= 0)
 				{
 					pFileFormat = lFormatIndex;
@@ -156,8 +156,9 @@ namespace scene
 		//damn conversion needed; fbx is not build with UNICODE support
 		char * fileName = new char[250];
 		const wchar_t*  fn = file->getFileName().c_str();
-		wcstombs(fileName, fn, wcslen(fn));
-		fileName[wcslen(fn)] = '\0';
+		FbxWCToAnsi(fn, fileName);
+		//wcstombs(fileName, fn, wcslen(fn));
+		//fileName[wcslen(fn)] = '\0';
 
 		// need to drop and delete as irrlicht keeps file for open
 		file->drop();

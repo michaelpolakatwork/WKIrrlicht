@@ -131,7 +131,7 @@ namespace irr
                 if (parent != -1) // root
                 {
                     scene::ISkinnedMesh::SJoint* parentJoint = getJointByName(mesh, names[parent]);
-                    if (parentJoint)
+                    if (parentJoint != nullptr)
                         parentJoint->Children.push_back(mesh->getAllJoints()[i]);
                 }
             }
@@ -154,11 +154,16 @@ namespace irr
             }
 
             // Compute the global matrix
+
             core::array<scene::ISkinnedMesh::SJoint*> roots = getRootJoints(mesh);
             for (u32 i = 0; i < roots.size(); ++i)
             {
                 computeGlobal(mesh, roots[i]);
             }
+   
+
+            
+            
 
             return true;
         }

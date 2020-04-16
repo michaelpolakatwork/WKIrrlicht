@@ -4,11 +4,11 @@
 
 #include <irrlicht.h>
 
- #include <assimp/scene.h>          // Output data structure
- #include <assimp/postprocess.h>    // Post processing flags
- #include <assimp/Importer.hpp>
+#include <assimp/scene.h>          // Output data structure
+#include <assimp/postprocess.h>    // Post processing flags
+#include <assimp/Importer.hpp>
 
-#include "IrrAssimpUtils.h"
+#include "IrrAssimp/IrrAssimpUtils.h"
 
 class SkinnedVertex
 {

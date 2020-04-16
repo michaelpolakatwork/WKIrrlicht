@@ -336,7 +336,6 @@ CSceneManager::CSceneManager(video::IVideoDriver* driver, io::IFileSystem* fs,
 	#endif // _IRR_COMPILE_WITH_W3ENT_LOADER_
 
 
-
 	
 	// scene loaders
 	#ifdef _IRR_COMPILE_WITH_IRR_SCENE_LOADER_

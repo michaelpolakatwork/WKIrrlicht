@@ -7,12 +7,22 @@
 
 #include <irrlicht.h>
 #include <string>
+#include <iostream>
 
 #include "config.h"
 #include "WKEventReceiver.h"
 
+class CW3EntLoader;
+
 using namespace irr;
 using namespace WKRender;
+
+io::path StartUpModelFile;
+io::path RigModelFile;
+io::path AnimationModelFile;
+bool animsLoaded;
+
+
 
 
 
@@ -35,6 +45,8 @@ int main()
 		return 1;
 
 	WKEventReceiver receiver(device);
+	animsLoaded = false;
+	core::array<core::stringc> animsList;
 	
 	device->setWindowCaption(L"Witcher Renderer! - Irrlicht Engine");
 	device->setEventReceiver(&receiver);
@@ -43,6 +55,7 @@ int main()
 	video::IVideoDriver* driver = device->getVideoDriver();
 	scene::ISceneManager* smgr = device->getSceneManager();
 	gui::IGUIEnvironment* gui = device->getGUIEnvironment();
+	io::IFileSystem* fileSystem = device->getFileSystem();
 
 	smgr->getParameters()->addBool("TW_TW3_LOAD_SKEL", true);
 	smgr->getParameters()->addBool("TW_TW3_LOAD_BEST_LOD_ONLY", true);
@@ -88,7 +101,27 @@ int main()
 	fpsText->setBackgroundColor(video::SColor(255, 0, 0, 0));
 	infoText->setBackgroundColor(video::SColor(255, 0, 0, 0));
 
-		
+
+	io::IXMLReader* xml = device->getFileSystem()->createXMLReader(L"config.xml");
+
+	while (xml && xml->read())
+	{
+		switch (xml->getNodeType())
+		{
+		case io::EXN_ELEMENT:
+		{
+			if (core::stringw("startUpModel") == xml->getNodeName())
+				StartUpModelFile = xml->getAttributeValue(L"file");
+			else if (core::stringw("rigModel") == xml->getNodeName())
+				RigModelFile = xml->getAttributeValue(L"file");
+			else if (core::stringw("animationModel") == xml->getNodeName())
+				AnimationModelFile = xml->getAttributeValue(L"file");
+		}
+		break;
+		default:
+			break;
+		}
+	}
 	//const io::path mediaPath = getExampleMediaPath();
 
 	for (core::stringw path : w3paths)
@@ -96,32 +129,53 @@ int main()
 		device->getFileSystem()->addFileArchive(path);
 	}
 
+	
+	if (xml)
+		xml->drop(); // don't forget to delete the xml reader
 
-	scene::IAnimatedMesh* mesh = smgr->getMesh("E:/WitcherMods/modTest/Test/files/Mod/Bundle/characters/models/animals/cat/model/t_01__cat.w2mesh");
+	scene::IAnimatedMesh* mesh = smgr->getMesh(StartUpModelFile);
 	if (!mesh)
 	{
 		device->drop();
 		return 1;
 	}
-	receiver.SetMesh(mesh);
 
 	smgr->getMeshManipulator()->recalculateNormals(mesh);
 	//mesh->setDirty(scene::EBT_VERTEX_AND_INDEX);
 	//scene::CSkinnedMesh() ms = mesh->getMesh(0);
+	node = smgr->addAnimatedMeshSceneNode(mesh);
 
-	scene::IAnimatedMeshSceneNode* node = smgr->addAnimatedMeshSceneNode(mesh);
-
-
+	helper = smgr->getMeshLoader(smgr->getMeshLoaderCount() - 1)->getMeshLoaderHelper();
 	if (node)
 	{
 		node->setScale(core::vector3df(3.0f));
 		node->setMaterialFlag(video::EMF_LIGHTING, false);
-		//node->addAnimator(smgr->createRotationAnimator(core::vector3df(1, .5, .25)));
-		//node->setMD2Animation(scene::EMAT_STAND);
 		scaleMul = node->getBoundingBox().getRadius() / 4;
+
+		bool rigSuccess = false;
+		if (!RigModelFile.empty())
+		{
+			skinMesh = helper->loadRig(RigModelFile, mesh);
+			if (skinMesh)
+			{
+				rigSuccess = true;
+				mesh->drop();
+				node->setMesh(skinMesh);
+				setMaterialsSettings(node);
+			}
+		}
+
+		if (!AnimationModelFile.empty() && rigSuccess)
+		{
+			animsList = helper->loadAnimation(AnimationModelFile, skinMesh);
+			if (animsList.size() > 0)
+				runAnimation("run");
+			else
+				std::cout << "Anims fail";
+		}
 	}
 
-
+	
 	//smgr->addLightSceneNode(0, core::vector3df(10, 10, -1), video::SColorf(1.0f, 1.0f, 1.0f), 100.0f, -1);
 	//smgr->setAmbientLight(video::SColorf(255.0, 255.0, 255.0));
 
