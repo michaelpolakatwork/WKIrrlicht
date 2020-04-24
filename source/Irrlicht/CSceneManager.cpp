@@ -147,6 +147,10 @@
 #include "CFBXMeshWriter.h"
 #endif
 
+#ifdef _IRR_COMPILE_WITH_GLTF_WRITER_
+#include "CGLTFMeshWriter.h"
+#endif
+
 #ifdef _IRR_COMPILE_WITH_CUBE_SCENENODE_
 #include "CCubeSceneNode.h"
 #endif // _IRR_COMPILE_WITH_CUBE_SCENENODE_
@@ -2651,7 +2655,13 @@ IMeshWriter* CSceneManager::createMeshWriter(EMESH_WRITER_TYPE type)
 		return new CFBXMeshWriter(this, Driver, FileSystem);
 #else
 		return 0;
-#endif // _IRR_COMPILE_WITH_FBX_WRITER_
+#endif // _IRR_COMPILE_WITH_GLTF_WRITER_
+	case EMWT_GLTF:
+#ifdef _IRR_COMPILE_WITH_GLTF_WRITER_
+		return new CGLTFMeshWriter(this, Driver, FileSystem);
+#else
+		return 0;
+#endif // _IRR_COMPILE_WITH_GLTF_WRITER_
 
 	}
 

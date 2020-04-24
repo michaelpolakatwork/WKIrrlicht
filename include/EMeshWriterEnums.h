@@ -19,25 +19,28 @@ namespace scene
 	enum EMESH_WRITER_TYPE
 	{
 		//! Irrlicht native mesh writer, for static .irrmesh files.
-		EMWT_IRR_MESH     = MAKE_IRR_ID('i','r','r','m'),
+		EMWT_IRR_MESH   = MAKE_IRR_ID('i','r','r','m'),
 
 		//! COLLADA mesh writer for .dae and .xml files
-		EMWT_COLLADA      = MAKE_IRR_ID('c','o','l','l'),
+		EMWT_COLLADA    = MAKE_IRR_ID('c','o','l','l'),
 
 		//! STL mesh writer for .stl files
-		EMWT_STL          = MAKE_IRR_ID('s','t','l',0),
+		EMWT_STL        = MAKE_IRR_ID('s','t','l',0),
 
 		//! OBJ mesh writer for .obj files
-		EMWT_OBJ          = MAKE_IRR_ID('o','b','j',0),
+		EMWT_OBJ        = MAKE_IRR_ID('o','b','j',0),
 
 		//! PLY mesh writer for .ply files
-		EMWT_PLY          = MAKE_IRR_ID('p','l','y',0),
+		EMWT_PLY        = MAKE_IRR_ID('p','l','y',0),
 		
 		//! B3D mesh writer, for static .b3d files
-		EMWT_B3D          = MAKE_IRR_ID('b', '3', 'd', 0),
+		EMWT_B3D        = MAKE_IRR_ID('b', '3', 'd', 0),
 
 		//! FBX mesh writer for .fbx mesh files
-		EMWT_FBX = MAKE_IRR_ID('f', 'b', 'x', 0)
+		EMWT_FBX		= MAKE_IRR_ID('f', 'b', 'x', 0),
+
+		//! FBX mesh writer for .fbx mesh files
+		EMWT_GLTF		= MAKE_IRR_ID('g', 'l', 't', 'f', 0)
 	};
 
 

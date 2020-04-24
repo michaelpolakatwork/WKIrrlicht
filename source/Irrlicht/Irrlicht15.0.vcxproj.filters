@@ -106,6 +106,9 @@
     <Filter Include="Irrlicht\video\OpenGL Context">
       <UniqueIdentifier>{2512a519-e6c0-4b48-aae4-ded2d2500b95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Irrlicht\scene\loaders\IrrAssimp">
+      <UniqueIdentifier>{5c8b3fe2-5db0-4eca-9467-a9cc0fd59a1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\IEventReceiver.h">
@@ -1372,6 +1375,21 @@
     <ClInclude Include="CW3MeshLoaderHelper.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
+    <ClInclude Include="IrrAssimp\IrrAssimp.h">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClInclude>
+    <ClInclude Include="IrrAssimp\IrrAssimpExport.h">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClInclude>
+    <ClInclude Include="IrrAssimp\IrrAssimpImport.h">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClInclude>
+    <ClInclude Include="IrrAssimp\IrrAssimpUtils.h">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLTFMeshWriter.h">
+      <Filter>Irrlicht\scene\writers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\changes.txt">
@@ -2336,6 +2354,21 @@
     </ClCompile>
     <ClCompile Include="CW3MeshLoaderHelper.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="IrrAssimp\IrrAssimp.cpp">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClCompile>
+    <ClCompile Include="IrrAssimp\IrrAssimpExport.cpp">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClCompile>
+    <ClCompile Include="IrrAssimp\IrrAssimpImport.cpp">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClCompile>
+    <ClCompile Include="IrrAssimp\IrrAssimpUtils.cpp">
+      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLTFMeshWriter.cpp">
+      <Filter>Irrlicht\scene\writers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

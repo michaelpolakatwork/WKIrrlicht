@@ -382,7 +382,7 @@
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>libxml2-md.lib;libfbxsdk-md.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc141-mtd.lib;libxml2-md.lib;libfbxsdk-md.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\..\bin\Win64-visualstudio\$(Configuration)\Irrlicht.dll</OutputFile>
       <AdditionalLibraryDirectories>D:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libci.lib;libmct;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -467,7 +467,7 @@
       <Culture>0x0c07</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>libxml2-md.lib;libfbxsdk-md.lib;kernel32.lib;user32.lib;gdi32.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc141-mt.lib;libxml2-md.lib;libfbxsdk-md.lib;kernel32.lib;user32.lib;gdi32.lib;opengl32.lib;winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\..\bin\Win64-visualstudio\$(Configuration)\Irrlicht.dll</OutputFile>
       <IgnoreSpecificDefaultLibraries>libci.lib;libmct;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -1028,6 +1028,7 @@
     <ClInclude Include="CDefaultSceneNodeFactory.h" />
     <ClInclude Include="CFBXMeshWriter.h" />
     <ClInclude Include="CGeometryCreator.h" />
+    <ClInclude Include="CGLTFMeshWriter.h" />
     <ClInclude Include="CGLXManager.h" />
     <ClInclude Include="CMeshCache.h" />
     <ClInclude Include="CMeshManipulator.h" />
@@ -1050,6 +1051,10 @@
     <ClInclude Include="CW3MeshLoaderHelper.h" />
     <ClInclude Include="CW3Skeleton.h" />
     <ClInclude Include="CWGLManager.h" />
+    <ClInclude Include="IrrAssimp\IrrAssimp.h" />
+    <ClInclude Include="IrrAssimp\IrrAssimpExport.h" />
+    <ClInclude Include="IrrAssimp\IrrAssimpImport.h" />
+    <ClInclude Include="IrrAssimp\IrrAssimpUtils.h" />
     <ClInclude Include="MeshCombiner.h" />
     <ClInclude Include="Octree.h" />
     <ClInclude Include="CSMFMeshFileLoader.h" />
@@ -1292,6 +1297,7 @@
     <ClCompile Include="CDefaultSceneNodeFactory.cpp" />
     <ClCompile Include="CFBXMeshWriter.cpp" />
     <ClCompile Include="CGeometryCreator.cpp" />
+    <ClCompile Include="CGLTFMeshWriter.cpp" />
     <ClCompile Include="CGLXManager.cpp" />
     <ClCompile Include="CMeshCache.cpp" />
     <ClCompile Include="CMeshManipulator.cpp" />
@@ -1455,6 +1461,10 @@
     <ClCompile Include="CLogger.cpp" />
     <ClCompile Include="COSOperator.cpp" />
     <ClCompile Include="CW3EntLoader.cpp" />
+    <ClCompile Include="IrrAssimp\IrrAssimp.cpp" />
+    <ClCompile Include="IrrAssimp\IrrAssimpExport.cpp" />
+    <ClCompile Include="IrrAssimp\IrrAssimpImport.cpp" />
+    <ClCompile Include="IrrAssimp\IrrAssimpUtils.cpp" />
     <ClCompile Include="Irrlicht.cpp" />
     <ClCompile Include="MeshCombiner.cpp" />
     <ClCompile Include="os.cpp" />

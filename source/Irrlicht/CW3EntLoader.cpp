@@ -979,7 +979,7 @@ void CW3EntLoader::readAnimBuffer(  core::array<core::array<SAnimationBufferBitw
             SAnimationBufferBitwiseCompressedData infos = inf[i][j];  // definitions of where the data is in a file and compression method
             dataFile->seek(infos.dataAddr);
 
-#ifdef _DEBUG
+#ifdef _DEBUG_W3
             // Debug infos
             os::Printer::log((formatString("--> Type : %s", getAnimTrackString(infos.type).c_str())).c_str(), ELL_DEBUG);
 
@@ -1007,7 +1007,7 @@ void CW3EntLoader::readAnimBuffer(  core::array<core::array<SAnimationBufferBitw
                     f32 px = readCompressedFloat(dataFile, compressionSize);
                     f32 py = readCompressedFloat(dataFile, compressionSize);
                     f32 pz = readCompressedFloat(dataFile, compressionSize);
-#ifdef _DEBUG  
+#ifdef _DEBUG_W3  
                     os::Printer::log((formatString("Position value = %f, %f, %f", px, py, pz)).c_str(), ELL_DEBUG);
 #endif
                     _positionsKeyframes.push_back(keyframe - FrameOffset);      // FrameOffset is global TODO: fix after removing old code
@@ -1060,11 +1060,11 @@ void CW3EntLoader::readAnimBuffer(  core::array<core::array<SAnimationBufferBitw
                         core::vector3df euler;
                         orientation.toEuler(euler);
                         euler *= core::RADTODEG;
-#ifdef _DEBUG                   
+#ifdef _DEBUG_W3                   
                         os::Printer::log((formatString("Quaternion : x=%f, y=%f, z=%f, w=%f", fx, fy, fz, fw)).c_str(), ELL_DEBUG);
                         os::Printer::log((formatString("Quaternion mult : x=%f, y=%f, z=%f, w=%f", fx * fx + fy * fy + fz * fz + fw * fw)).c_str(), ELL_DEBUG);
                         os::Printer::log((formatString("Euler : x=%f, y=%f, z=%f", euler.X, euler.Y, euler.Z)).c_str(), ELL_DEBUG);
-#endif // _DEBUG                      
+#endif // _DEBUG_w3                      
                     }
                     else
                     {
@@ -1086,11 +1086,11 @@ void CW3EntLoader::readAnimBuffer(  core::array<core::array<SAnimationBufferBitw
                         core::vector3df euler;
                         orientation.toEuler(euler);
                         euler *= core::RADTODEG;
-#ifdef _DEBUG
+#ifdef _DEBUG_W3
                         os::Printer::log((formatString("Quaternion : x=%f, y=%f, z=%f, w=%f", fx, fy, fz, fw)).c_str(), ELL_DEBUG);
                         os::Printer::log((formatString("Quaternion mult : x=%f, y=%f, z=%f, w=%f", fx * fx + fy * fy + fz * fz + fw * fw)).c_str(), ELL_DEBUG);
                         os::Printer::log((formatString("Euler : x=%f, y=%f, z=%f", euler.X, euler.Y, euler.Z)).c_str(), ELL_DEBUG);
-#endif // _DEBUG
+#endif // _DEBUG_W3
                     }
 
                     //scene::ISkinnedMesh::SRotationKey* key = meshToAnimate->addRotationKey(joint);
@@ -1322,7 +1322,7 @@ CW3Skeleton CW3EntLoader::W3_CSkeleton(io::IReadFile* file, W3_DataInfos infos)
         scaleMat.setScale(scale);
 
         core::matrix4 localTransform = posMat * rotMat * scaleMat;
-        orientation.makeInverse();
+        orientation.makeInverse();                        // vl: what for??
         skeleton.matrix.push_back(localTransform);
         skeleton.positions.push_back(position);
         skeleton.rotations.push_back(orientation);
@@ -1596,8 +1596,9 @@ void CW3EntLoader::ReadBones(io::IReadFile* file)
         matrix.getInverse(invRot);
         //invRot.rotateVect(position);
 
-        core::vector3df rotation = invRot.getRotationDegrees();
-        //rotation = core::vector3df(0, 0, 0);
+        core::vector3df rotation = invRot.getRotationDegrees();       //vl: why this shit???
+        //core::vector3df rotation = matrix.getRotationDegrees();
+
         position = - position;
         core::vector3df scale = matrix.getScale();
 
@@ -1615,10 +1616,12 @@ void CW3EntLoader::ReadBones(io::IReadFile* file)
             joint->LocalMatrix = joint->GlobalMatrix;
 
             joint->Animatedposition = joint->LocalMatrix.getTranslation();
-            joint->Animatedrotation = core::quaternion(joint->LocalMatrix.getRotationDegrees()).makeInverse();
+            joint->Animatedrotation = core::quaternion(joint->LocalMatrix.getRotationDegrees()).makeInverse();    // vl: why???
+            //joint->Animatedrotation = core::quaternion(joint->LocalMatrix.getRotationDegrees()); 
             joint->Animatedscale = joint->LocalMatrix.getScale();
 
             CW3DataCache::_instance.addBoneEntry(joint->Name, matrix);
+            joint->OffsetMatrix = matrix;
         }
     }
 

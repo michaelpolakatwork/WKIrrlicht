@@ -19,10 +19,11 @@
 #include "IMeshWriter.h"
 #include "IWriteFile.h"
 #include "IVideoDriver.h"
-
-
 #include "ISceneNode.h"
-//#include "S3DVertex.h"
+#include "ISkinnedMesh.h"
+
+
+#include <fbxsdk.h>
 
 namespace irr
 {
@@ -33,6 +34,7 @@ namespace io
 
 namespace scene
 {
+
 	class CFBXMeshWriter : public IMeshWriter
 	{
 	public:
@@ -47,14 +49,37 @@ namespace scene
 		//virtual bool writeScene(io::IWriteFile* file, scene::ISceneNode* root, int writeRoot);
 
 		//! writes a mesh
-		virtual bool writeMesh(io::IWriteFile* file, scene::IMesh* mesh, s32 flags = EMWF_NONE) _IRR_OVERRIDE_;
+		virtual bool writeMesh(io::IWriteFile* file, IMesh* mesh, s32 flags = EMWF_NONE) _IRR_OVERRIDE_;
+
+		
+
+	private:
+		const char* gDiffuseElementName = "DiffuseUV";
+		const char* gAmbientElementName = "AmbientUV";
+
+		
 
 	protected:
 
+		FbxMesh* createMesh(FbxScene* lScene, IMeshBuffer* buffer, FbxString meshName);
+		FbxNode* CFBXMeshWriter::createSkeletonNode(FbxScene* lScene, const ISkinnedMesh::SJoint* joint);
+		void CFBXMeshWriter::createAnimation(FbxNode* rootNode, FbxAnimLayer* animLayer, ISkinnedMesh* mesh);
+
+		core::array<ISkinnedMesh::SJoint*> getRootJoints(const ISkinnedMesh* mesh);
+
+		void CFBXMeshWriter::linkMeshToSkeleton(FbxSkin* skin, FbxNode* meshNode, FbxNode* pSkeletonRoot, ISkinnedMesh* mesh, u32 meshBuffer);
+		void CFBXMeshWriter::storeBindPose(FbxScene* pScene, FbxNode* pPatch);
+		void CFBXMeshWriter::addNodeRecursively(FbxArray<FbxNode*>& pNodeArray, FbxNode* pNode);
+
+		FbxColor irrColorToFbxColor(video::SColor color);
+		FbxDouble3 irrColorToFbxDouble3(video::SColor color) ;
+		FbxDouble3 irrVector3dfToFbxDouble3(core::vector3df vector);
+		FbxAMatrix CFBXMeshWriter::irrMatrixToFbxMatrix(core::matrix4 matrix);
+
 		ISceneManager* _smgr;
-		io::IFileSystem* FileSystem;
-		video::IVideoDriver* VideoDriver;
-		io::path Directory;
+		io::IFileSystem* _fileSystem;
+		video::IVideoDriver* _videoDriver;
+		io::path _directory;
 
 	};
 }

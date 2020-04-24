@@ -153,6 +153,9 @@ namespace scene
 			//! Skin weights
 			core::array<SWeight> Weights;
 
+			//! vl: experimental adding
+			core::matrix4 OffsetMatrix;
+
 			//! Unnecessary for loaders, will be overwritten on finalize
 			core::matrix4 GlobalMatrix;
 			core::matrix4 GlobalAnimatedMatrix;

@@ -22,18 +22,18 @@ namespace irr
         //core::array<scene::ISkinnedMesh::SJoint*> getRootJoints(const scene::ISkinnedMesh* mesh);
         // Definition in IrrAssimpExport
         
-        core::array<scene::ISkinnedMesh::SJoint*> getRootJoints(const scene::ISkinnedMesh* mesh)
+        core::array<ISkinnedMesh::SJoint*> CW3Skeleton::getRootJoints(const scene::ISkinnedMesh* mesh)
         {
-            core::array<scene::ISkinnedMesh::SJoint*> roots;
+            core::array<ISkinnedMesh::SJoint*> roots;
 
-            core::array<scene::ISkinnedMesh::SJoint*> allJoints = mesh->getAllJoints();
+            core::array<ISkinnedMesh::SJoint*> allJoints = mesh->getAllJoints();
             for (u32 i = 0; i < allJoints.size(); i++)
             {
                 bool isRoot = true;
-                scene::ISkinnedMesh::SJoint* testedJoint = allJoints[i];
+                ISkinnedMesh::SJoint* testedJoint = allJoints[i];
                 for (u32 j = 0; j < allJoints.size(); j++)
                 {
-                   scene::ISkinnedMesh::SJoint* testedJoint2 = allJoints[j];
+                   ISkinnedMesh::SJoint* testedJoint2 = allJoints[j];
                    for (u32 k = 0; k < testedJoint2->Children.size(); k++)
                    {
                        if (testedJoint == testedJoint2->Children[k])
@@ -96,7 +96,7 @@ namespace irr
             }
         }
 
-        scene::ISkinnedMesh::SJoint* getJointByName(scene::ISkinnedMesh* mesh, core::stringc name)
+        ISkinnedMesh::SJoint* getJointByName(scene::ISkinnedMesh* mesh, core::stringc name)
         {
             //std::cout << "count= " << mesh->getJointCount() << std::endl;
             //for (u32 i = 0; i < mesh->getJointCount(); ++i)
@@ -106,7 +106,7 @@ namespace irr
             if (jointID == -1)
                 return nullptr;
 
-            return mesh->getAllJoints()[static_cast<u32>(jointID)];
+            return mesh->getAllJoints()[(u32)(jointID)];
         }
 
 
@@ -155,16 +155,12 @@ namespace irr
 
             // Compute the global matrix
 
-            core::array<scene::ISkinnedMesh::SJoint*> roots = getRootJoints(mesh);
+            core::array<scene::ISkinnedMesh::SJoint*> roots = this->getRootJoints(mesh);
             for (u32 i = 0; i < roots.size(); ++i)
             {
                 computeGlobal(mesh, roots[i]);
             }
    
-
-            
-            
-
             return true;
         }
     }

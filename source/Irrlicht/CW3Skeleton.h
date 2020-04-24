@@ -12,7 +12,7 @@ namespace irr
     namespace scene
     {
 
-        scene::ISkinnedMesh::SJoint* getJointByName(scene::ISkinnedMesh* mesh, core::stringc name);
+        //ISkinnedMesh::SJoint* getJointByName(scene::ISkinnedMesh* mesh, core::stringc name);
 
         class CW3Skeleton
         {
@@ -29,6 +29,10 @@ namespace irr
             core::array<core::vector3df> scales;
 
             bool applyToModel(scene::ISkinnedMesh* mesh);
+
+        private:
+            core::array<ISkinnedMesh::SJoint*> CW3Skeleton::getRootJoints(const scene::ISkinnedMesh* mesh);
+
         };
     }
 }

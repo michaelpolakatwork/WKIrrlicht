@@ -110,6 +110,10 @@ void IrrAssimpExport::createAnimations(const irr::scene::ISkinnedMesh* mesh)
         AssimpScene->mNumAnimations = 0;
         return;
     }
+    // irr mesh anim is per frame, fbx uses seconds, find denominator
+    double fts = 0;
+    if (mesh->getAnimationSpeed() > 0)
+        fts = 1.0 / mesh->getAnimationSpeed();
 
     AssimpScene->mNumAnimations = 1;
     AssimpScene->mAnimations = new aiAnimation*[1];
@@ -136,7 +140,7 @@ void IrrAssimpExport::createAnimations(const irr::scene::ISkinnedMesh* mesh)
         {
             const scene::ISkinnedMesh::SPositionKey key = joint->PositionKeys[j];
 
-            AssimpScene->mAnimations[0]->mChannels[i]->mPositionKeys[j].mTime = key.frame;
+            AssimpScene->mAnimations[0]->mChannels[i]->mPositionKeys[j].mTime = key.frame * fts;
             AssimpScene->mAnimations[0]->mChannels[i]->mPositionKeys[j].mValue = IrrToAssimpVector(key.position);
         }
 
@@ -144,10 +148,11 @@ void IrrAssimpExport::createAnimations(const irr::scene::ISkinnedMesh* mesh)
         AssimpScene->mAnimations[0]->mChannels[i]->mRotationKeys = new aiQuatKey[joint->RotationKeys.size()];
         for (u32 j = 0; j < joint->RotationKeys.size(); ++j)
         {
-            const scene::ISkinnedMesh::SRotationKey key = joint->RotationKeys[j];
+            scene::ISkinnedMesh::SRotationKey key = joint->RotationKeys[j];
 
-            AssimpScene->mAnimations[0]->mChannels[i]->mRotationKeys[j].mTime = key.frame;
-            AssimpScene->mAnimations[0]->mChannels[i]->mRotationKeys[j].mValue = IrrToAssimpQuaternion(key.rotation);
+            AssimpScene->mAnimations[0]->mChannels[i]->mRotationKeys[j].mTime = key.frame * fts;
+            //AssimpScene->mAnimations[0]->mChannels[i]->mRotationKeys[j].mValue = IrrToAssimpQuaternion(key.rotation);
+            AssimpScene->mAnimations[0]->mChannels[i]->mRotationKeys[j].mValue = IrrToAssimpQuaternion(key.rotation.makeInverse());
         }
 
         AssimpScene->mAnimations[0]->mChannels[i]->mNumScalingKeys = joint->ScaleKeys.size();
@@ -156,7 +161,7 @@ void IrrAssimpExport::createAnimations(const irr::scene::ISkinnedMesh* mesh)
         {
             const scene::ISkinnedMesh::SScaleKey key = joint->ScaleKeys[j];
 
-            AssimpScene->mAnimations[0]->mChannels[i]->mScalingKeys[j].mTime = key.frame;
+            AssimpScene->mAnimations[0]->mChannels[i]->mScalingKeys[j].mTime = key.frame * fts;
             AssimpScene->mAnimations[0]->mChannels[i]->mScalingKeys[j].mValue = IrrToAssimpVector(key.scale);
         }
     }
@@ -209,7 +214,7 @@ void IrrAssimpExport::createMaterials(const scene::IMesh* mesh)
     }
 }
 
-void IrrAssimpExport::createMeshes(const scene::IMesh* mesh)
+void IrrAssimpExport::createMeshes(scene::IMesh* mesh)
 {
     AssimpScene->mNumMeshes = mesh->getMeshBufferCount();
     AssimpScene->mMeshes = new aiMesh*[AssimpScene->mNumMeshes];
@@ -292,9 +297,57 @@ void IrrAssimpExport::createMeshes(const scene::IMesh* mesh)
         }
 
         assimpMesh->mMaterialIndex = i;
+        assimpMesh->mPrimitiveTypes = aiPrimitiveType::aiPrimitiveType_TRIANGLE;
+
+        // bones and weights
+        
+        if (mesh->getMeshType() == scene::EAMT_SKINNED)
+        {
+            scene::ISkinnedMesh* skinned = static_cast<scene::ISkinnedMesh*>(mesh);
+            const u32 nbOfBones = skinned->getJointCount();
+
+            u32 bonesCounter = 0;
+            aiBone** bones = new aiBone*[nbOfBones];
+            for (u32 j = 0; j < nbOfBones; ++j)
+            {
+                const scene::ISkinnedMesh::SJoint* joint = skinned->getAllJoints()[j];
+                if (joint->Weights.size() > 0)
+                {
+                    
+                    bones[bonesCounter] = new aiBone();
+                    
+                    bones[bonesCounter]->mName = aiString(joint->Name.c_str());
+                    aiMatrix4x4 aiMatx;
+                    //assimpMesh->mBones[j]->mOffsetMatrix = IrrToAssimpMatrix(joint->OffsetMatrix);
+                    bones[bonesCounter]->mOffsetMatrix = IrrToAssimpMatrix(joint->OffsetMatrix);
+                    bones[bonesCounter]->mNumWeights = joint->Weights.size();
+
+                    bones[bonesCounter]->mWeights = new aiVertexWeight[joint->Weights.size()];
+                    for (u32 k = 0; k < bones[bonesCounter]->mNumWeights; ++k)
+                    {
+                        //assimpMesh->mBones[j]->mWeights[k] = new aiVertexWeight();
+                        bones[bonesCounter]->mWeights[k].mVertexId = joint->Weights[k].vertex_id;
+                        bones[bonesCounter]->mWeights[k].mWeight = joint->Weights[k].strength;
+                    }
+                    ++bonesCounter;
+                }
+            }
+            assimpMesh->mBones = new aiBone * [bonesCounter];
+            for (u32 j = 0; j < nbOfBones; ++j)
+            {
+                assimpMesh->mBones[j] = bones[j];
+            }
+            assimpMesh->mNumBones = bonesCounter;
+            
+            delete[] bones;
+            
+        }
+        
         AssimpScene->mMeshes[i] = assimpMesh;
     }
 }
+
+
 
 void IrrAssimpExport::writeFile(scene::IMesh* mesh, core::stringc format, core::stringc filename)
 {
@@ -338,8 +391,9 @@ void IrrAssimpExport::writeFile(scene::IMesh* mesh, core::stringc format, core::
 	delete AssimpScene->mRootNode;
 	AssimpScene->mRootNode = 0;
 
-	for (unsigned int i = 0; i < AssimpScene->mNumMeshes; ++i)
-		delete AssimpScene->mMeshes[i];
+    /*
+    for (unsigned int i = 0; i < AssimpScene->mNumMeshes; ++i)
+        delete AssimpScene->mMeshes[i]; */
 	delete[] AssimpScene->mMeshes;
 	AssimpScene->mMeshes = 0;
 

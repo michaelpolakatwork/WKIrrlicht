@@ -8,7 +8,7 @@
 #include <assimp/postprocess.h>    // Post processing flags
 #include <assimp/Importer.hpp>
 
-#include "IrrAssimp/IrrAssimpUtils.h"
+#include "IrrAssimpUtils.h"
 
 class SkinnedVertex
 {
