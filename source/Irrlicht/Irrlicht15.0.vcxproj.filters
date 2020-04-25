@@ -1375,21 +1375,6 @@
     <ClInclude Include="CW3MeshLoaderHelper.h">
       <Filter>Irrlicht\scene\loaders</Filter>
     </ClInclude>
-    <ClInclude Include="IrrAssimp\IrrAssimp.h">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClInclude>
-    <ClInclude Include="IrrAssimp\IrrAssimpExport.h">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClInclude>
-    <ClInclude Include="IrrAssimp\IrrAssimpImport.h">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClInclude>
-    <ClInclude Include="IrrAssimp\IrrAssimpUtils.h">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClInclude>
-    <ClInclude Include="CGLTFMeshWriter.h">
-      <Filter>Irrlicht\scene\writers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\changes.txt">
@@ -2354,21 +2339,6 @@
     </ClCompile>
     <ClCompile Include="CW3MeshLoaderHelper.cpp">
       <Filter>Irrlicht\scene\loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="IrrAssimp\IrrAssimp.cpp">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClCompile>
-    <ClCompile Include="IrrAssimp\IrrAssimpExport.cpp">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClCompile>
-    <ClCompile Include="IrrAssimp\IrrAssimpImport.cpp">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClCompile>
-    <ClCompile Include="IrrAssimp\IrrAssimpUtils.cpp">
-      <Filter>Irrlicht\scene\loaders\IrrAssimp</Filter>
-    </ClCompile>
-    <ClCompile Include="CGLTFMeshWriter.cpp">
-      <Filter>Irrlicht\scene\writers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

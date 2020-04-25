@@ -133,17 +133,17 @@ int main()
 	if (xml)
 		xml->drop(); // don't forget to delete the xml reader
 
-	scene::IAnimatedMesh* mesh = smgr->getMesh(StartUpModelFile);
-	if (!mesh)
+	Mesh = smgr->getMesh(StartUpModelFile);
+	if (!Mesh)
 	{
 		device->drop();
 		return 1;
 	}
 
-	smgr->getMeshManipulator()->recalculateNormals(mesh);
+	smgr->getMeshManipulator()->recalculateNormals(Mesh);
 	//mesh->setDirty(scene::EBT_VERTEX_AND_INDEX);
 	//scene::CSkinnedMesh() ms = mesh->getMesh(0);
-	node = smgr->addAnimatedMeshSceneNode(mesh);
+	node = smgr->addAnimatedMeshSceneNode(Mesh);
 
 	helper = smgr->getMeshLoader(smgr->getMeshLoaderCount() - 1)->getMeshLoaderHelper();
 	if (node)
@@ -155,11 +155,11 @@ int main()
 		bool rigSuccess = false;
 		if (!RigModelFile.empty())
 		{
-			skinMesh = helper->loadRig(RigModelFile, mesh);
+			skinMesh = helper->loadRig(RigModelFile, Mesh);
 			if (skinMesh)
 			{
 				rigSuccess = true;
-				mesh->drop();
+				//mesh->drop();
 				node->setMesh(skinMesh);
 				setMaterialsSettings(node);
 			}
@@ -236,6 +236,7 @@ int main()
 
 	
 	device->drop();
+	animsList.clear();
 
 	return 0;
 }

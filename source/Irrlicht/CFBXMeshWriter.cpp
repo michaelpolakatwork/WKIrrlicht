@@ -744,10 +744,11 @@ namespace scene
 		FbxExporter* lExporter = FbxExporter::Create(lSdkManager, "");
 
 		int pFileFormat = lSdkManager->GetIOPluginRegistry()->GetNativeWriterFormat();
-		//Try to export in ASCII if possible
+	
 		int lFormatIndex, lFormatCount = lSdkManager->GetIOPluginRegistry()->GetWriterFormatCount();
 		int pAsciiFormat;
 
+		//Try to export in ASCII if possible
 		for (lFormatIndex = 0; lFormatIndex < lFormatCount; lFormatIndex++)
 		{
 			if (lSdkManager->GetIOPluginRegistry()->WriterIsFBX(lFormatIndex))
@@ -762,6 +763,7 @@ namespace scene
 			}
 		}
 
+		//================== binary =========================================
 		core::stringc fNameBin = file->getFileName().c_str();
 
 		// need to drop and delete as irrlicht keeps file for open
@@ -781,7 +783,10 @@ namespace scene
 		if (!lStatus)
 			os::Printer::log("Call to binary FbxExporter::Export() failed.", ELL_ERROR);
 
-		core::stringc fNameAscii = core::stringc("ascii_") + fNameBin;
+		//================== ascii =========================================
+		
+
+		core::stringc fNameAscii = fNameBin + core::stringc("_ascii.fbx");
 		std::remove(fNameAscii.c_str());
 
 		// Initialize the exporter by providing a filename.
@@ -795,7 +800,10 @@ namespace scene
 		// Export the scene.
 		lStatus = lExporter->Export(lScene);
 		if (!lStatus)
+		{
 			os::Printer::log("Call to ascii FbxExporter::Export() failed.", ELL_ERROR);
+			os::Printer::log("Error returned: ", lExporter->GetStatus().GetErrorString(), ELL_ERROR);
+		}
 
 		//cleanup
 		lExporter->Destroy();
