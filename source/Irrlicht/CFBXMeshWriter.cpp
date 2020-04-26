@@ -156,7 +156,7 @@ namespace scene
 
 			// diffuse
 			core::vector2df diffuse = buffer->getTCoords(j);
-			lUVDiffuseElement->GetDirectArray().Add(FbxVector2(diffuse.X, diffuse.Y));
+			lUVDiffuseElement->GetDirectArray().Add(FbxVector2(diffuse.X, -diffuse.Y));
 
 		}
 
